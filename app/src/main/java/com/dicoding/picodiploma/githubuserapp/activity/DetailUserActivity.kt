@@ -7,11 +7,17 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.dicoding.picodiploma.githubuserapp.apater.SectionPagerAdapter
 import com.dicoding.picodiploma.githubuserapp.databinding.ActivityDetailUserBinding
-import com.dicoding.picodiploma.githubuserapp.model.DetailUserViewModel
+import com.dicoding.picodiploma.githubuserapp.data.model.DetailUserViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailUserActivity : AppCompatActivity() {
     companion object{
         const val EXTRA_USERNAME = "extra_username"
+        const val EXTRA_ID = "extra_id"
+        const val EXTRA_URL = "extra_url"
     }
 
     private lateinit var binding: ActivityDetailUserBinding
@@ -23,10 +29,13 @@ class DetailUserActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         var username = intent.getStringExtra(EXTRA_USERNAME)
+        val id = intent.getIntExtra(EXTRA_ID, 0)
+        val avatar_url = intent.getStringExtra(EXTRA_URL)
+
         val bundle = Bundle()
         bundle.putString(EXTRA_USERNAME, username)
 
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailUserViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(DetailUserViewModel::class.java)
 
         if (username != null) {
             viewModel.setUserDetail(username)
@@ -49,6 +58,32 @@ class DetailUserActivity : AppCompatActivity() {
                 }
             }
         })
+
+        var _isChecked = false
+        CoroutineScope(Dispatchers.IO).launch {
+            val count = viewModel.checkUser(id)
+            withContext(Dispatchers.Main){
+                if (count != null){
+                    if (count > 0) {
+                        binding.tbFavorite.isChecked = true
+                        _isChecked = true
+                    } else {
+                        binding.tbFavorite.isChecked = false
+                        _isChecked = false
+                    }
+                }
+            }
+        }
+
+        binding.tbFavorite.setOnClickListener {
+            _isChecked = !_isChecked
+            if (_isChecked) {
+                viewModel.addToFavorite(username!!, id, avatar_url!!)
+            } else {
+                viewModel.removeFromFavorite(id)
+            }
+            binding.tbFavorite.isChecked = _isChecked
+        }
 
         val sectionPagerAdapter = SectionPagerAdapter(this, supportFragmentManager, bundle)
         binding.apply {

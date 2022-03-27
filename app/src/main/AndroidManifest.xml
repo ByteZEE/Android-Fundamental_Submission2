@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubUserApp">
         <activity
+            android:name=".ui.dark_mode.DarkModeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.favorite.FavoriteActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity

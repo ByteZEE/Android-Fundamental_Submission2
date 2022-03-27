@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dicoding.picodiploma.githubuserapp.R
 import com.dicoding.picodiploma.githubuserapp.activity.DetailUserActivity
 import com.dicoding.picodiploma.githubuserapp.apater.UserAdapter
 import com.dicoding.picodiploma.githubuserapp.databinding.FragmentFollowersBinding
-import com.dicoding.picodiploma.githubuserapp.model.FollowersViewModel
+import com.dicoding.picodiploma.githubuserapp.data.model.FollowersViewModel
 
 class FollowersFragment : Fragment(R.layout.fragment_followers) {
 

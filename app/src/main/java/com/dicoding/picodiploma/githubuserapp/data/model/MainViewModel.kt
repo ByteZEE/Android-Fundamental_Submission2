@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.githubuserapp.model
+package com.dicoding.picodiploma.githubuserapp.data.model
 
 import android.util.Log
 import androidx.lifecycle.LiveData

@@ -11,7 +11,7 @@ import com.dicoding.picodiploma.githubuserapp.R
 import com.dicoding.picodiploma.githubuserapp.activity.DetailUserActivity
 import com.dicoding.picodiploma.githubuserapp.apater.UserAdapter
 import com.dicoding.picodiploma.githubuserapp.databinding.FragmentFollowingBinding
-import com.dicoding.picodiploma.githubuserapp.model.FollowingViewModel
+import com.dicoding.picodiploma.githubuserapp.data.model.FollowingViewModel
 
 class FollowingFragment : Fragment(R.layout.fragment_following) {
 

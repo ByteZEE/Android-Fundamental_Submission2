@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black1">#040303</color>
-    <color name="brown">#461111</color>
-    <color name="red">#A13333</color>
-    <color name="orange">#B3541E</color>
-
-    <color name="green1">#219F94</color>
-    <color name="green2">#C1DEAE</color>
-    <color name="lime1">#F2F5C8</color>
-    <color name="lime2">#E8E8A6</color>
-
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
