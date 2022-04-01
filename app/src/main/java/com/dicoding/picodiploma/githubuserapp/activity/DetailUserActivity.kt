@@ -2,6 +2,7 @@ package com.dicoding.picodiploma.githubuserapp.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -41,22 +42,21 @@ class DetailUserActivity : AppCompatActivity() {
             viewModel.setUserDetail(username)
         }
         viewModel.getUserDetail().observe(this,{
-            if (it != null){
                 binding.apply {
-                    tvUsername.text = it.login
-                    tvName.text = it.name
-                    tvRepository.text = "${it.public_repos} Repository"
-                    tvFollowers.text = "${it.followers} Followers"
-                    tvFollowing.text = "${it.following} Following"
-                    tvLocation.text = it.location
-                    tvCompany.text = it.company
+                    showLoading(false)
+                    tvUsername.text = defaultValue(it.login)
+                    tvName.text = defaultValue(it.name)
+                    tvRepository.text = defaultValue("${it.public_repos} Repository")
+                    tvFollowers.text = defaultValue("${it.followers} Followers")
+                    tvFollowing.text =defaultValue("${it.following} Following")
+                    tvLocation.text = it.location?:"Unknown"
+                    tvCompany.text = it.company?:"Unknown"
                     Glide.with(this@DetailUserActivity)
                         .load(it.avatar_url)
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .circleCrop()
                         .into(ivAvatar)
                 }
-            }
         })
 
         var _isChecked = false
@@ -89,6 +89,24 @@ class DetailUserActivity : AppCompatActivity() {
         binding.apply {
             viewPager.adapter = sectionPagerAdapter
             tabs.setupWithViewPager(viewPager)
+        }
+    }
+
+    private fun defaultValue(x: String) : String {
+        val text: String
+        if (x.isNullOrEmpty()){
+            text = "Unknown"
+        } else {
+            text = x
+        }
+        return text
+    }
+
+    private fun showLoading(state: Boolean){
+        if (state){
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
     }
 }

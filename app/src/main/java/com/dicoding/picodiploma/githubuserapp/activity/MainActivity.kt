@@ -1,5 +1,6 @@
 package com.dicoding.picodiploma.githubuserapp.activity
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,16 +8,25 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.githubuserapp.R
+import com.dicoding.picodiploma.githubuserapp.SettingPreferences
+import com.dicoding.picodiploma.githubuserapp.ViewModelFactory
 import com.dicoding.picodiploma.githubuserapp.apater.UserAdapter
 import com.dicoding.picodiploma.githubuserapp.databinding.ActivityMainBinding
 import com.dicoding.picodiploma.githubuserapp.data.model.MainViewModel
 import com.dicoding.picodiploma.githubuserapp.response.User
 import com.dicoding.picodiploma.githubuserapp.ui.dark_mode.DarkModeActivity
+//import com.dicoding.picodiploma.githubuserapp.ui.dark_mode.dataStore
 import com.dicoding.picodiploma.githubuserapp.ui.favorite.FavoriteActivity
 
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private lateinit var viewModel : MainViewModel
@@ -70,6 +80,21 @@ class MainActivity : AppCompatActivity() {
                 showLoading(false)
             }
         })
+
+        val pref = SettingPreferences.getInstance(dataStore)
+        val mainViewModel = ViewModelProvider(this, ViewModelFactory(pref)).get(
+            com.dicoding.picodiploma.githubuserapp.MainViewModel::class.java
+        )
+        mainViewModel.getThemeSettings().observe(this,
+            { isDarkModeActive: Boolean ->
+                if (isDarkModeActive) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+                }
+            })
     }
 
     private fun searchUser(){
